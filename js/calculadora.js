@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var depoisLitrosEl = document.querySelector("#depois-litros");
   var depoisReaisEl = document.querySelector("#depois-reais");
   var economiaTotalEl = document.querySelector("#economia-total");
+  var listaDicasEl = document.querySelector("#lista-dicas");
+
+  var LIMITE_CONSUMO_BAIXO = 3000;
+  var LIMITE_CONSUMO_MEDIO = 6000;
 
   var ultimoCalculo = null;
 
@@ -45,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     exibirResultado(resultado);
     exibirAntes(resultado);
+    atualizarDicas(resultado.litros, dadosNormalizados.pessoas);
     limparComparadorDepois();
     limparMensagem();
   });
@@ -194,6 +199,110 @@ document.addEventListener("DOMContentLoaded", function () {
     depoisLitrosEl.textContent = "—";
     depoisReaisEl.textContent = "—";
     economiaTotalEl.textContent = "—";
+  }
+
+  function atualizarDicas(litrosTotais, pessoas) {
+    if (!listaDicasEl) {
+      return;
+    }
+
+    var litrosPorPessoa = litrosTotais / pessoas;
+    var faixa = classificarConsumo(litrosPorPessoa);
+    var dicas = obterDicasPorFaixa(faixa, litrosPorPessoa);
+
+    listaDicasEl.textContent = "";
+
+    for (var i = 0; i < dicas.length; i++) {
+      var dica = dicas[i];
+      var item = document.createElement("li");
+      item.className = "tip-item";
+
+      var icone = document.createElement("span");
+      icone.className = "tip-icon";
+      icone.setAttribute("aria-hidden", "true");
+      icone.textContent = dica.icone;
+
+      var texto = document.createElement("p");
+      texto.className = "tip-text";
+      texto.textContent = dica.texto;
+
+      item.appendChild(icone);
+      item.appendChild(texto);
+      listaDicasEl.appendChild(item);
+    }
+  }
+
+  function classificarConsumo(litrosPorPessoa) {
+    if (litrosPorPessoa <= LIMITE_CONSUMO_BAIXO) {
+      return "baixo";
+    }
+
+    if (litrosPorPessoa <= LIMITE_CONSUMO_MEDIO) {
+      return "medio";
+    }
+
+    return "alto";
+  }
+
+  function obterDicasPorFaixa(faixa, litrosPorPessoa) {
+    var litrosFormatados = formatarNumero(litrosPorPessoa);
+
+    if (faixa === "baixo") {
+      return [
+        {
+          icone: "✅",
+          texto: "Consumo consciente! Sua média é de " + litrosFormatados + " L por pessoa/mês — abaixo de 3.000 L."
+        },
+        {
+          icone: "💧",
+          texto: "Continue fechando a torneira ao escovar os dentes e ensaboar a louça."
+        },
+        {
+          icone: "🔧",
+          texto: "Mantenha o hábito de verificar torneiras e descargas com vazamento."
+        }
+      ];
+    }
+
+    if (faixa === "medio") {
+      return [
+        {
+          icone: "📊",
+          texto: "Sua média é de " + litrosFormatados + " L por pessoa/mês — há espaço para melhorar."
+        },
+        {
+          icone: "🚿",
+          texto: "Reduza alguns minutos no banho. Cada minuto a menos no chuveiro economiza cerca de 12 litros."
+        },
+        {
+          icone: "🪥",
+          texto: "Feche a torneira ao escovar os dentes e ao ensaboar as mãos."
+        },
+        {
+          icone: "🚽",
+          texto: "Prefira a descarga econômica quando possível e evite usá-la como lixeira."
+        }
+      ];
+    }
+
+    return [
+      {
+        icone: "⚠️",
+        texto: "Consumo elevado: " + litrosFormatados + " L por pessoa/mês — acima de 6.000 L."
+      },
+      {
+        icone: "🚿",
+        texto: "Priorize banhos mais curtos. O chuveiro é o maior vilão do consumo doméstico."
+      },
+      {
+        icone: "🔧",
+        texto: "Conserte vazamentos o quanto antes — uma torneira pingando desperdiça mais de 100 L por mês."
+      },
+      {
+        icone: "👕",
+        texto: "Use a máquina de lavar apenas com carga cheia e reutilize água da chuva para regar plantas."
+      }
+    ];
   }
 
   function formatarLitros(litros) {
