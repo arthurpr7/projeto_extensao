@@ -7,6 +7,7 @@
   <title>Quiz | Consumo de Água Consciente</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/quiz.css">
 </head>
 <body>
 
@@ -47,10 +48,224 @@
 
       <section class="section" aria-labelledby="quiz-titulo">
         <h2 id="quiz-titulo" class="visually-hidden">Questionário</h2>
-        <div class="placeholder-box">
-          <p>🚧 Quiz em construção</p>
-          <small>Na Parte 7 adicionaremos as perguntas, a pontuação e o resultado final.</small>
-        </div>
+
+        <form id="form-quiz" class="quiz-form" novalidate>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">1. Você fecha a torneira ao escovar os dentes?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-1" value="3">
+                  <span class="quiz-opcao-texto">Sempre</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-1" value="1">
+                  <span class="quiz-opcao-texto">Às vezes</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-1" value="0">
+                  <span class="quiz-opcao-texto">Não ou quase nunca</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">2. Quanto tempo você fica no chuveiro, em média?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-2" value="3">
+                  <span class="quiz-opcao-texto">Até 5 minutos</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-2" value="1">
+                  <span class="quiz-opcao-texto">Entre 5 e 10 minutos</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-2" value="0">
+                  <span class="quiz-opcao-texto">Mais de 10 minutos</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">3. Você conserta vazamentos em torneiras e descargas rapidamente?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-3" value="3">
+                  <span class="quiz-opcao-texto">Sim, logo que percebo</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-3" value="1">
+                  <span class="quiz-opcao-texto">Demoro um pouco para consertar</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-3" value="0">
+                  <span class="quiz-opcao-texto">Não costumo consertar</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">4. Você usa a descarga econômica (botão menor) quando possível?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-4" value="3">
+                  <span class="quiz-opcao-texto">Sempre que possível</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-4" value="1">
+                  <span class="quiz-opcao-texto">Às vezes</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-4" value="0">
+                  <span class="quiz-opcao-texto">Não uso ou não tenho essa opção</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">5. Você reutiliza água (ex.: chuva para regar plantas)?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-5" value="2">
+                  <span class="quiz-opcao-texto">Sim, frequentemente</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-5" value="1">
+                  <span class="quiz-opcao-texto">Já fiz algumas vezes</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-5" value="0">
+                  <span class="quiz-opcao-texto">Nunca</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">6. Ao lavar louça ou escovar os dentes, você ensaboa com a torneira fechada?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-6" value="3">
+                  <span class="quiz-opcao-texto">Sempre</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-6" value="1">
+                  <span class="quiz-opcao-texto">Às vezes</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-6" value="0">
+                  <span class="quiz-opcao-texto">Não</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">7. Você usa a máquina de lavar roupa apenas com carga cheia?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-7" value="2">
+                  <span class="quiz-opcao-texto">Sim</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-7" value="1">
+                  <span class="quiz-opcao-texto">Às vezes</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-7" value="0">
+                  <span class="quiz-opcao-texto">Não</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="quiz-pergunta">
+            <legend class="quiz-legend">8. Você evita usar mangueira aberta para lavar calçada, carro ou quintal?</legend>
+            <ul class="quiz-opcoes">
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-8" value="1">
+                  <span class="quiz-opcao-texto">Sim, uso balde ou evito lavar com mangueira</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-8" value="0">
+                  <span class="quiz-opcao-texto">Às vezes uso mangueira aberta</span>
+                </label>
+              </li>
+              <li>
+                <label class="quiz-opcao">
+                  <input type="radio" name="pergunta-8" value="0">
+                  <span class="quiz-opcao-texto">Frequentemente uso mangueira aberta</span>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <div class="quiz-acoes">
+            <button type="button" class="btn btn--primary" id="btn-resultado">
+              Ver resultado
+            </button>
+            <p id="quiz-mensagem" class="quiz-mensagem" role="alert" aria-live="polite"></p>
+          </div>
+
+        </form>
+
+        <article id="resultado-quiz" class="quiz-resultado" hidden>
+          <span id="resultado-icone" class="resultado-icone" aria-hidden="true"></span>
+          <h2 id="resultado-titulo" class="resultado-titulo"></h2>
+          <p id="resultado-pontuacao" class="resultado-pontuacao"></p>
+          <p id="resultado-texto" class="resultado-texto"></p>
+
+          <div class="resultado-melhorias" id="resultado-melhorias">
+            <h3 class="resultado-melhorias-titulo" id="melhorias-titulo"></h3>
+            <ul class="resultado-melhorias-lista" id="lista-melhorias"></ul>
+          </div>
+
+          <a href="calculadora.html" class="btn btn--primary">Ir para a calculadora</a>
+        </article>
+
       </section>
 
     </div>
@@ -67,5 +282,6 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/quiz.js"></script>
 </body>
 </html>
