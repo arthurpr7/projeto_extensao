@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Consumo de Água Consciente — projeto de extensão sobre uso racional da água no dia a dia.">
+  <title>Consumo de Água Consciente | Início</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo" aria-label="Página inicial">
+        <span class="logo-icon" aria-hidden="true">💧</span>
+        <span>Consumo de Água Consciente</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="menu-principal">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="site-nav" id="menu-principal" aria-label="Navegação principal">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link nav-link--active">Início</a></li>
+          <li><a href="calculadora.html" class="nav-link">Calculadora</a></li>
+          <li><a href="quiz.html" class="nav-link">Quiz</a></li>
+          <li><a href="sobre.html" class="nav-link">Sobre</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <div class="container">
+
+      <section class="hero" aria-labelledby="hero-titulo">
+        <div class="hero-content">
+          <span class="hero-badge">Projeto de Extensão — Faminas</span>
+          <h1 id="hero-titulo" class="hero-title">
+            Use a água com <span>consciência</span>
+          </h1>
+          <p class="hero-description">
+            Descubra quanto água sua casa consome por mês, simule economia real
+            e aprenda hábitos simples que protegem o planeta e o seu bolso.
+          </p>
+          <div class="hero-actions">
+            <a href="calculadora.html" class="btn btn--primary">Calcular consumo</a>
+            <a href="quiz.html" class="btn btn--secondary">Fazer o quiz</a>
+          </div>
+        </div>
+
+        <aside class="hero-visual" aria-hidden="true">
+          <div class="hero-card">
+            <p class="hero-card-icon">🚿</p>
+            <p class="hero-card-value">150 L</p>
+            <p class="hero-card-label">média de consumo diário por pessoa no Brasil</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" aria-labelledby="recursos-titulo">
+        <header class="section-header">
+          <h2 id="recursos-titulo" class="section-title">O que você pode fazer aqui</h2>
+          <p class="section-subtitle">
+            Ferramentas práticas para entender e reduzir o consumo de água no seu dia a dia.
+          </p>
+        </header>
+
+        <div class="card-grid">
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">📊</span>
+            <h3 class="card-title">Calculadora de consumo</h3>
+            <p class="card-text">
+              Informe seus hábitos diários e descubra o consumo mensal estimado
+              em litros, metros cúbicos e valor em reais.
+            </p>
+            <a href="calculadora.html" class="btn btn--secondary">Acessar</a>
+          </article>
+
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">⚖️</span>
+            <h3 class="card-title">Antes × Depois</h3>
+            <p class="card-text">
+              Compare seu consumo atual com um cenário otimizado e veja quanto
+              você pode economizar com mudanças simples.
+            </p>
+            <a href="calculadora.html" class="btn btn--secondary">Simular</a>
+          </article>
+
+          <article class="card">
+            <span class="card-icon" aria-hidden="true">❓</span>
+            <h3 class="card-title">Quiz rápido</h3>
+            <p class="card-text">
+              Teste seus conhecimentos com o quiz "Você economiza água?" e
+              receba orientações personalizadas.
+            </p>
+            <a href="quiz.html" class="btn btn--secondary">Começar</a>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-brand">Consumo de Água Consciente</p>
+      <div class="footer-info">
+        <p>Faminas — Análise e Desenvolvimento de Sistemas</p>
+        <p>Projeto de Extensão · Front-end 1</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
