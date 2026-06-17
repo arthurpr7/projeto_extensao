@@ -6,11 +6,23 @@ document.addEventListener("DOMContentLoaded", function () {
   var LITROS_POR_MINUTO_TORNEIRA = 6;
   var LITROS_POR_LAVAGEM = 50;
 
+  var REDUCAO_CHUVEIRO = 0.2;
+  var REDUCAO_TORNEIRA = 0.3;
+  var REDUCAO_DESCARGA = 0.15;
+
   var btnCalcular = document.querySelector("#btn-calcular");
+  var btnSimular = document.querySelector("#btn-simular");
   var formMensagem = document.querySelector("#form-mensagem");
   var totalLitrosEl = document.querySelector("#total-litros");
   var totalM3El = document.querySelector("#total-m3");
   var totalReaisEl = document.querySelector("#total-reais");
+  var antesLitrosEl = document.querySelector("#antes-litros");
+  var antesReaisEl = document.querySelector("#antes-reais");
+  var depoisLitrosEl = document.querySelector("#depois-litros");
+  var depoisReaisEl = document.querySelector("#depois-reais");
+  var economiaTotalEl = document.querySelector("#economia-total");
+
+  var ultimoCalculo = null;
 
   if (!btnCalcular) {
     return;
@@ -23,10 +35,35 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    var resultado = calcularConsumo(dados);
+    var dadosNormalizados = normalizarDados(dados);
+    var resultado = calcularConsumo(dadosNormalizados);
+
+    ultimoCalculo = {
+      dados: dadosNormalizados,
+      resultado: resultado
+    };
+
     exibirResultado(resultado);
+    exibirAntes(resultado);
+    limparComparadorDepois();
     limparMensagem();
   });
+
+  if (btnSimular) {
+    btnSimular.addEventListener("click", function () {
+      if (!ultimoCalculo) {
+        exibirErro("Calcule o consumo antes de simular a economia.");
+        return;
+      }
+
+      var dadosOtimizados = criarCenarioOtimizado(ultimoCalculo.dados);
+      var resultadoDepois = calcularConsumo(dadosOtimizados);
+      var resultadoAntes = ultimoCalculo.resultado;
+
+      exibirComparador(resultadoAntes, resultadoDepois);
+      limparMensagem();
+    });
+  }
 
   function lerCampos() {
     return {
@@ -37,6 +74,18 @@ document.addEventListener("DOMContentLoaded", function () {
       roupa: document.querySelector("#roupa").value,
       rega: document.querySelector("#rega").value,
       tarifa: document.querySelector("#tarifa").value
+    };
+  }
+
+  function normalizarDados(dados) {
+    return {
+      pessoas: Number(dados.pessoas),
+      chuveiro: Number(dados.chuveiro),
+      descarga: Number(dados.descarga),
+      torneira: Number(dados.torneira),
+      roupa: Number(dados.roupa),
+      rega: Number(dados.rega),
+      tarifa: Number(dados.tarifa)
     };
   }
 
@@ -81,23 +130,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function calcularConsumo(dados) {
-    var pessoas = Number(dados.pessoas);
-    var chuveiro = Number(dados.chuveiro);
-    var descarga = Number(dados.descarga);
-    var torneira = Number(dados.torneira);
-    var roupa = Number(dados.roupa);
-    var rega = Number(dados.rega);
-    var tarifa = Number(dados.tarifa);
-
-    var consumoChuveiro = chuveiro * LITROS_POR_MINUTO_CHUVEIRO * pessoas * DIAS_NO_MES;
-    var consumoDescarga = descarga * LITROS_POR_DESCARGA * pessoas * DIAS_NO_MES;
-    var consumoTorneira = torneira * LITROS_POR_MINUTO_TORNEIRA * pessoas * DIAS_NO_MES;
-    var consumoRoupa = roupa * LITROS_POR_LAVAGEM * SEMANAS_NO_MES;
-    var consumoRega = rega * SEMANAS_NO_MES;
+    var consumoChuveiro = dados.chuveiro * LITROS_POR_MINUTO_CHUVEIRO * dados.pessoas * DIAS_NO_MES;
+    var consumoDescarga = dados.descarga * LITROS_POR_DESCARGA * dados.pessoas * DIAS_NO_MES;
+    var consumoTorneira = dados.torneira * LITROS_POR_MINUTO_TORNEIRA * dados.pessoas * DIAS_NO_MES;
+    var consumoRoupa = dados.roupa * LITROS_POR_LAVAGEM * SEMANAS_NO_MES;
+    var consumoRega = dados.rega * SEMANAS_NO_MES;
 
     var litros = consumoChuveiro + consumoDescarga + consumoTorneira + consumoRoupa + consumoRega;
     var m3 = litros / 1000;
-    var reais = m3 * tarifa;
+    var reais = m3 * dados.tarifa;
 
     return {
       litros: litros,
@@ -106,10 +147,61 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  function criarCenarioOtimizado(dados) {
+    return {
+      pessoas: dados.pessoas,
+      chuveiro: dados.chuveiro * (1 - REDUCAO_CHUVEIRO),
+      descarga: dados.descarga * (1 - REDUCAO_DESCARGA),
+      torneira: dados.torneira * (1 - REDUCAO_TORNEIRA),
+      roupa: dados.roupa,
+      rega: dados.rega,
+      tarifa: dados.tarifa
+    };
+  }
+
   function exibirResultado(resultado) {
-    totalLitrosEl.textContent = formatarNumero(resultado.litros) + " L";
+    totalLitrosEl.textContent = formatarLitros(resultado.litros);
     totalM3El.textContent = resultado.m3.toFixed(2).replace(".", ",") + " m³";
-    totalReaisEl.textContent = "R$ " + resultado.reais.toFixed(2).replace(".", ",");
+    totalReaisEl.textContent = formatarReais(resultado.reais);
+  }
+
+  function exibirAntes(resultado) {
+    antesLitrosEl.textContent = formatarLitros(resultado.litros);
+    antesReaisEl.textContent = formatarReais(resultado.reais) + " por mês";
+  }
+
+  function exibirComparador(antes, depois) {
+    antesLitrosEl.textContent = formatarLitros(antes.litros);
+    antesReaisEl.textContent = formatarReais(antes.reais) + " por mês";
+    depoisLitrosEl.textContent = formatarLitros(depois.litros);
+    depoisReaisEl.textContent = formatarReais(depois.reais) + " por mês";
+
+    var litrosEconomizados = antes.litros - depois.litros;
+    var reaisEconomizados = antes.reais - depois.reais;
+    var percentual = 0;
+
+    if (antes.litros > 0) {
+      percentual = (litrosEconomizados / antes.litros) * 100;
+    }
+
+    economiaTotalEl.textContent =
+      formatarLitros(litrosEconomizados) +
+      " (" + percentual.toFixed(1).replace(".", ",") + "%) — " +
+      formatarReais(reaisEconomizados) + "/mês";
+  }
+
+  function limparComparadorDepois() {
+    depoisLitrosEl.textContent = "—";
+    depoisReaisEl.textContent = "—";
+    economiaTotalEl.textContent = "—";
+  }
+
+  function formatarLitros(litros) {
+    return formatarNumero(litros) + " L";
+  }
+
+  function formatarReais(valor) {
+    return "R$ " + valor.toFixed(2).replace(".", ",");
   }
 
   function formatarNumero(numero) {
