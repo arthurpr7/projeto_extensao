@@ -477,6 +477,214 @@ ul {
   color: var(--color-text);
 }
 
+/* ========== Seções alternadas ========== */
+.section--alt {
+  background-color: var(--color-surface);
+  margin: 0 calc(-1 * var(--space-lg));
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+/* ========== Curiosidades (facts) ========== */
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+.fact-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.fact-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.fact-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.fact-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height);
+}
+
+/* ========== Como funciona (steps) ========== */
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 40rem;
+  margin: 0 auto;
+  list-style: none;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.step-number {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.step-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.step-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.steps-cta {
+  text-align: center;
+  margin-top: var(--space-2xl);
+}
+
+/* ========== Impacto ========== */
+.section--impact {
+  padding-bottom: var(--space-3xl);
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+.impact-card {
+  background: linear-gradient(145deg, var(--color-primary-light), var(--color-bg-card));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.impact-icon {
+  font-size: var(--font-size-3xl);
+}
+
+.impact-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.impact-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+  line-height: var(--line-height);
+}
+
+/* ========== Objetivos (Sobre) ========== */
+.objectives-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.objective-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.objective-marker {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d1fae5;
+  color: var(--color-secondary-dark);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+}
+
+.objective-item p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}
+
+/* ========== Autor (Sobre) ========== */
+.author-card {
+  max-width: 40rem;
+  margin: 0 auto;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  text-align: center;
+}
+
+.author-card h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+}
+
+.author-card p {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.author-card p:last-child {
+  margin-bottom: 0;
+}
+
+.author-name {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
 /* ========== Footer ========== */
 .site-footer {
   background-color: var(--color-text);
@@ -573,6 +781,19 @@ ul {
 
   .about-grid {
     grid-template-columns: 1fr;
+  }
+
+  .facts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section--alt {
+    margin: 0;
+    border-radius: 0;
   }
 
   .footer-inner {
