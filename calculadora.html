@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Calculadora de consumo mensal de água — simule hábitos e veja sua economia.">
+  <meta name="description" content="Calculadora de consumo mensal de água — estime hábitos, compare cenários e veja sua economia.">
   <title>Calculadora | Consumo de Água Consciente</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -42,9 +42,20 @@
         <h1 class="page-title">Calculadora de Consumo</h1>
         <p class="page-description">
           Estime o consumo mensal de água da sua residência, compare cenários
-          de economia e receba dicas personalizadas.
+          de economia e receba dicas personalizadas. Os valores são estimativas
+          educativas, não substituem a leitura do hidrômetro.
         </p>
       </header>
+
+      <section class="calc-info" aria-labelledby="como-calculamos-titulo">
+        <h2 id="como-calculamos-titulo" class="calc-info-title">Como calculamos</h2>
+        <p class="calc-info-text">
+          Multiplicamos seus hábitos informados por médias fixas de referência:
+          chuveiro 12 L/min, descarga 6 L, torneira 6 L/min, lavagem 50 L/ciclo,
+          30 dias por mês e 4 semanas por mês. O resultado em litros vira m³
+          (÷ 1.000) e, em seguida, valor em reais (m³ × tarifa).
+        </p>
+      </section>
 
       <div class="calc-layout">
 
@@ -192,8 +203,9 @@
                     required
                   >
                   <span class="form-hint">
-                    (Referência DEMSUR Muriaé: ~R$ 4,25/m³ com base na tarifa de água local.
-                    Se você for de outro município, consulte o valor na sua conta de água.)
+                    Referência DEMSUR Muriaé: ~R$ 4,25/m³ (componente água). Consulte sua
+                    conta para ajustar. A calculadora não aplica tarifa mínima — na DEMSUR,
+                    imóveis costumam pagar pelo menos 10 m³ mesmo consumindo menos.
                   </span>
                 </div>
               </div>
@@ -216,10 +228,16 @@
                 </li>
               </ul>
               <p class="form-hint">
-                No modo comparar, seu consumo será contrastado com médias de hábitos econômicos
-                (ex.: 8 min de banho, 4 descargas e 5 min de torneira por pessoa/dia).
-                No modo pessoal, a partir do segundo cálculo, você verá a comparação com o anterior.
+                <strong>Uso consciente:</strong> contrasta seu consumo com hábitos econômicos
+                recomendados (8 min de banho, 4 descargas e 5 min de torneira por pessoa/dia).
               </p>
+              <div class="modo-aviso" role="note">
+                <p>
+                  <strong>Só ver meu consumo:</strong> no primeiro cálculo aparece apenas o
+                  resultado. A comparação com o cálculo anterior surge automaticamente a
+                  partir do segundo.
+                </p>
+              </div>
             </fieldset>
 
             <div class="calc-actions">
@@ -252,6 +270,12 @@
               <p class="result-label">Valor estimado (R$)</p>
             </article>
           </div>
+
+          <p class="calc-nota">
+            O valor em reais é calculado diretamente (m³ × tarifa), sem aplicar a tarifa
+            mínima de 10 m³ da DEMSUR Muriaé. Na conta real, quem consome menos pode
+            pagar como se tivesse usado 10 m³.
+          </p>
         </section>
 
         <section class="calc-panel calc-panel--oculto" id="painel-comparador" aria-labelledby="comparador-titulo">
