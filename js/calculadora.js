@@ -6,13 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
   var LITROS_POR_MINUTO_TORNEIRA = 6;
   var LITROS_POR_LAVAGEM = 50;
 
-  var REDUCAO_CHUVEIRO = 0.2;
-  var REDUCAO_TORNEIRA = 0.3;
-  var REDUCAO_DESCARGA = 0.15;
+  var REFERENCIA_CHUVEIRO = 8;
+  var REFERENCIA_DESCARGA = 4;
+  var REFERENCIA_TORNEIRA = 5;
+  var REFERENCIA_ROUPA = 2;
+
+  var LIMITE_CONSUMO_BAIXO = 3000;
+  var LIMITE_CONSUMO_MEDIO = 6000;
 
   var btnCalcular = document.querySelector("#btn-calcular");
-  var btnSimular = document.querySelector("#btn-simular");
   var formMensagem = document.querySelector("#form-mensagem");
+  var painelComparador = document.querySelector("#painel-comparador");
+  var painelResultado = document.querySelector("#painel-resultado");
   var totalLitrosEl = document.querySelector("#total-litros");
   var totalM3El = document.querySelector("#total-m3");
   var totalReaisEl = document.querySelector("#total-reais");
@@ -21,10 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
   var depoisLitrosEl = document.querySelector("#depois-litros");
   var depoisReaisEl = document.querySelector("#depois-reais");
   var economiaTotalEl = document.querySelector("#economia-total");
+  var economiaTituloEl = document.querySelector("#economia-titulo");
+  var comparadorTituloEl = document.querySelector("#comparador-titulo");
+  var comparadorSubtituloEl = document.querySelector("#comparador-subtitulo");
+  var comparadorTagAntesEl = document.querySelector("#comparador-tag-antes");
+  var comparadorTagDepoisEl = document.querySelector("#comparador-tag-depois");
   var listaDicasEl = document.querySelector("#lista-dicas");
-
-  var LIMITE_CONSUMO_BAIXO = 3000;
-  var LIMITE_CONSUMO_MEDIO = 6000;
 
   var ultimoCalculo = null;
 
@@ -41,37 +48,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var dadosNormalizados = normalizarDados(dados);
     var resultado = calcularConsumo(dadosNormalizados);
+    var modo = lerModoCalculo();
+
+    exibirResultado(resultado);
+    atualizarDicas(resultado.litros, dadosNormalizados.pessoas);
+
+    if (modo === "comparar") {
+      var dadosConscientes = criarCenarioConsciente(dadosNormalizados);
+      var resultadoConsciente = calcularConsumo(dadosConscientes);
+      configurarComparador("consciente");
+      exibirComparador(resultado, resultadoConsciente, "consciente");
+      mostrarComparador();
+    } else if (ultimoCalculo !== null) {
+      configurarComparador("pessoal", dados.nome, ultimoCalculo.nome);
+      exibirComparador(ultimoCalculo.resultado, resultado, "pessoal");
+      mostrarComparador();
+    } else {
+      ocultarComparador();
+    }
 
     ultimoCalculo = {
       dados: dadosNormalizados,
-      resultado: resultado
+      resultado: resultado,
+      nome: dados.nome
     };
 
-    exibirResultado(resultado);
-    exibirAntes(resultado);
-    atualizarDicas(resultado.litros, dadosNormalizados.pessoas);
-    limparComparadorDepois();
     limparMensagem();
+    rolarParaResultados();
   });
 
-  if (btnSimular) {
-    btnSimular.addEventListener("click", function () {
-      if (!ultimoCalculo) {
-        exibirErro("Calcule o consumo antes de simular a economia.");
-        return;
-      }
+  function lerModoCalculo() {
+    var selecionado = document.querySelector('input[name="modo-calculo"]:checked');
 
-      var dadosOtimizados = criarCenarioOtimizado(ultimoCalculo.dados);
-      var resultadoDepois = calcularConsumo(dadosOtimizados);
-      var resultadoAntes = ultimoCalculo.resultado;
+    if (!selecionado) {
+      return "consumo";
+    }
 
-      exibirComparador(resultadoAntes, resultadoDepois);
-      limparMensagem();
-    });
+    return selecionado.value;
   }
 
   function lerCampos() {
     return {
+      nome: document.querySelector("#nome-usuario").value.trim(),
       pessoas: document.querySelector("#pessoas").value,
       chuveiro: document.querySelector("#chuveiro").value,
       descarga: document.querySelector("#descarga").value,
@@ -152,13 +170,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  function criarCenarioOtimizado(dados) {
+  function criarCenarioConsciente(dados) {
     return {
       pessoas: dados.pessoas,
-      chuveiro: dados.chuveiro * (1 - REDUCAO_CHUVEIRO),
-      descarga: dados.descarga * (1 - REDUCAO_DESCARGA),
-      torneira: dados.torneira * (1 - REDUCAO_TORNEIRA),
-      roupa: dados.roupa,
+      chuveiro: REFERENCIA_CHUVEIRO,
+      descarga: REFERENCIA_DESCARGA,
+      torneira: REFERENCIA_TORNEIRA,
+      roupa: REFERENCIA_ROUPA,
       rega: dados.rega,
       tarifa: dados.tarifa
     };
@@ -170,35 +188,95 @@ document.addEventListener("DOMContentLoaded", function () {
     totalReaisEl.textContent = formatarReais(resultado.reais);
   }
 
-  function exibirAntes(resultado) {
-    antesLitrosEl.textContent = formatarLitros(resultado.litros);
-    antesReaisEl.textContent = formatarReais(resultado.reais) + " por mês";
-  }
-
-  function exibirComparador(antes, depois) {
-    antesLitrosEl.textContent = formatarLitros(antes.litros);
-    antesReaisEl.textContent = formatarReais(antes.reais) + " por mês";
-    depoisLitrosEl.textContent = formatarLitros(depois.litros);
-    depoisReaisEl.textContent = formatarReais(depois.reais) + " por mês";
-
-    var litrosEconomizados = antes.litros - depois.litros;
-    var reaisEconomizados = antes.reais - depois.reais;
-    var percentual = 0;
-
-    if (antes.litros > 0) {
-      percentual = (litrosEconomizados / antes.litros) * 100;
+  function configurarComparador(tipo, nomeAtual, nomeAnterior) {
+    if (tipo === "pessoal") {
+      comparadorTituloEl.textContent = "Comparador: evolução do seu consumo";
+      comparadorSubtituloEl.textContent =
+        "Veja a diferença entre o cálculo anterior e os hábitos que você acabou de informar.";
+      comparadorTagAntesEl.textContent = formatarEtapaComparacao(nomeAnterior, "anterior");
+      comparadorTagDepoisEl.textContent = formatarEtapaComparacao(nomeAtual, "atual");
+      economiaTituloEl.textContent = "Variação";
+      return;
     }
 
-    economiaTotalEl.textContent =
-      formatarLitros(litrosEconomizados) +
-      " (" + percentual.toFixed(1).replace(".", ",") + "%) — " +
-      formatarReais(reaisEconomizados) + "/mês";
+    comparadorTituloEl.textContent = "Comparador: seu consumo × uso consciente";
+    comparadorSubtituloEl.textContent =
+      "Veja a diferença entre os hábitos informados e uma referência de uso racional da água.";
+    comparadorTagAntesEl.textContent = "Seu consumo";
+    comparadorTagDepoisEl.textContent = "Uso consciente";
+    economiaTituloEl.textContent = "Economia possível";
   }
 
-  function limparComparadorDepois() {
-    depoisLitrosEl.textContent = "—";
-    depoisReaisEl.textContent = "—";
-    economiaTotalEl.textContent = "—";
+  function formatarEtapaComparacao(nome, etapa) {
+    if (nome) {
+      return "Cálculo de " + nome + " — " + etapa;
+    }
+
+    return "Cálculo " + etapa;
+  }
+
+  function exibirComparador(resultadoAntes, resultadoDepois, tipo) {
+    antesLitrosEl.textContent = formatarLitros(resultadoAntes.litros);
+    antesReaisEl.textContent = formatarReais(resultadoAntes.reais) + " por mês";
+    depoisLitrosEl.textContent = formatarLitros(resultadoDepois.litros);
+    depoisReaisEl.textContent = formatarReais(resultadoDepois.reais) + " por mês";
+
+    var litrosDiferenca = resultadoAntes.litros - resultadoDepois.litros;
+    var reaisDiferenca = resultadoAntes.reais - resultadoDepois.reais;
+
+    if (tipo === "pessoal") {
+      if (litrosDiferenca === 0) {
+        economiaTotalEl.textContent = "Seu consumo permaneceu igual ao cálculo anterior.";
+        return;
+      }
+
+      if (litrosDiferenca > 0) {
+        var percentualPessoal = (litrosDiferenca / resultadoAntes.litros) * 100;
+        economiaTotalEl.textContent =
+          "Você reduziu " + formatarLitros(litrosDiferenca) +
+          " (" + percentualPessoal.toFixed(1).replace(".", ",") + "%) — " +
+          formatarReais(reaisDiferenca) + "/mês em relação ao cálculo anterior.";
+        return;
+      }
+
+      var litrosAumento = Math.abs(litrosDiferenca);
+      var reaisAumento = Math.abs(reaisDiferenca);
+      economiaTotalEl.textContent =
+        "Seu consumo aumentou " + formatarLitros(litrosAumento) +
+        " — " + formatarReais(reaisAumento) + "/mês em relação ao cálculo anterior.";
+      return;
+    }
+
+    if (litrosDiferenca <= 0) {
+      economiaTotalEl.textContent =
+        "Você já consome menos ou igual à referência de uso consciente. Parabéns!";
+      return;
+    }
+
+    var percentual = (litrosDiferenca / resultadoAntes.litros) * 100;
+
+    economiaTotalEl.textContent =
+      formatarLitros(litrosDiferenca) +
+      " (" + percentual.toFixed(1).replace(".", ",") + "%) — " +
+      formatarReais(reaisDiferenca) + "/mês";
+  }
+
+  function mostrarComparador() {
+    if (painelComparador) {
+      painelComparador.classList.remove("calc-panel--oculto");
+    }
+  }
+
+  function ocultarComparador() {
+    if (painelComparador) {
+      painelComparador.classList.add("calc-panel--oculto");
+    }
+  }
+
+  function rolarParaResultados() {
+    if (painelResultado) {
+      painelResultado.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   function atualizarDicas(litrosTotais, pessoas) {

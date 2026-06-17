@@ -2,7 +2,11 @@
 .calc-layout {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
+}
+
+.calc-layout > .section {
+  padding: 0;
 }
 
 /* ========== Formulário ========== */
@@ -83,6 +87,46 @@
   align-items: center;
 }
 
+.modo-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.modo-opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.modo-opcao:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.modo-opcao input[type="radio"] {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.modo-opcao-texto {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.calc-panel--oculto {
+  display: none;
+}
+
 .form-message {
   width: 100%;
   font-size: var(--font-size-sm);
@@ -95,6 +139,10 @@
 }
 
 /* ========== Painel de resultados ========== */
+#painel-resultado {
+  scroll-margin-top: calc(var(--header-height) + var(--space-md));
+}
+
 .calc-panel {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
@@ -168,8 +216,11 @@
 .compare-tag {
   display: inline-block;
   width: fit-content;
+  max-width: 100%;
   padding: var(--space-xs) var(--space-sm);
   font-size: var(--font-size-sm);
+  line-height: 1.35;
+  text-align: center;
   font-weight: var(--font-weight-semibold);
   border-radius: var(--radius-full);
   background-color: var(--color-primary-light);

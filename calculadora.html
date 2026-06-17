@@ -59,7 +59,21 @@
             <fieldset class="calc-fieldset">
               <legend class="calc-legend">Residência</legend>
               <div class="form-grid">
-                <div class="form-group form-input--full">
+                <div class="form-group">
+                  <label class="form-label" for="nome-usuario">Seu nome</label>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="nome-usuario"
+                    name="nome-usuario"
+                    maxlength="40"
+                    placeholder="Ex.: Arthur"
+                    autocomplete="name"
+                  >
+                  <span class="form-hint">Identifica seus cálculos na comparação pessoal.</span>
+                </div>
+
+                <div class="form-group">
                   <label class="form-label" for="pessoas">Número de pessoas na casa</label>
                   <input
                     class="form-input"
@@ -68,7 +82,7 @@
                     name="pessoas"
                     min="1"
                     max="20"
-                    value="3"
+                    placeholder="Ex.: 3"
                     required
                   >
                   <span class="form-hint">Inclua todos os moradores que usam água diariamente.</span>
@@ -88,7 +102,7 @@
                     name="chuveiro"
                     min="0"
                     max="120"
-                    value="15"
+                    placeholder="Ex.: 15"
                     required
                   >
                   <span class="form-hint">Média por pessoa. Chuveiro ≈ 12 L/min.</span>
@@ -103,7 +117,7 @@
                     name="descarga"
                     min="0"
                     max="50"
-                    value="6"
+                    placeholder="Ex.: 6"
                     required
                   >
                   <span class="form-hint">Por pessoa. Caixa padrão ≈ 6 L por descarga.</span>
@@ -118,7 +132,7 @@
                     name="torneira"
                     min="0"
                     max="120"
-                    value="10"
+                    placeholder="Ex.: 10"
                     required
                   >
                   <span class="form-hint">Lavar louça, escovar dentes etc. ≈ 6 L/min.</span>
@@ -138,7 +152,7 @@
                     name="roupa"
                     min="0"
                     max="30"
-                    value="3"
+                    placeholder="Ex.: 3"
                     required
                   >
                   <span class="form-hint">Máquina de lavar ≈ 50 L por ciclo.</span>
@@ -153,7 +167,7 @@
                     name="rega"
                     min="0"
                     max="500"
-                    value="20"
+                    placeholder="Ex.: 20"
                     required
                   >
                   <span class="form-hint">Volume total usado na rega das plantas.</span>
@@ -174,17 +188,43 @@
                     min="0"
                     max="50"
                     step="0.01"
-                    value="5.00"
+                    value="4.25"
                     required
                   >
-                  <span class="form-hint">Consulte sua conta de água para um valor mais preciso.</span>
+                  <span class="form-hint">
+                    (Referência DEMSUR Muriaé: ~R$ 4,25/m³ com base na tarifa de água local.
+                    Se você for de outro município, consulte o valor na sua conta de água.)
+                  </span>
                 </div>
               </div>
             </fieldset>
 
+            <fieldset class="calc-fieldset">
+              <legend class="calc-legend">Tipo de cálculo</legend>
+              <ul class="modo-lista">
+                <li>
+                  <label class="modo-opcao">
+                    <input type="radio" name="modo-calculo" value="consumo" checked>
+                    <span class="modo-opcao-texto">Só ver meu consumo</span>
+                  </label>
+                </li>
+                <li>
+                  <label class="modo-opcao">
+                    <input type="radio" name="modo-calculo" value="comparar">
+                    <span class="modo-opcao-texto">Comparar com uso consciente recomendado</span>
+                  </label>
+                </li>
+              </ul>
+              <p class="form-hint">
+                No modo comparar, seu consumo será contrastado com médias de hábitos econômicos
+                (ex.: 8 min de banho, 4 descargas e 5 min de torneira por pessoa/dia).
+                No modo pessoal, a partir do segundo cálculo, você verá a comparação com o anterior.
+              </p>
+            </fieldset>
+
             <div class="calc-actions">
               <button type="button" class="btn btn--primary" id="btn-calcular">
-                Calcular consumo
+                Calcular
               </button>
               <p id="form-mensagem" class="form-message" role="alert" aria-live="polite"></p>
             </div>
@@ -192,7 +232,7 @@
           </form>
         </section>
 
-        <section class="calc-panel" aria-labelledby="resultado-titulo">
+        <section class="calc-panel" id="painel-resultado" aria-labelledby="resultado-titulo">
           <h2 id="resultado-titulo" class="calc-panel-title">Consumo mensal estimado</h2>
           <p class="calc-panel-subtitle">Resultado com base nos hábitos informados acima.</p>
 
@@ -214,15 +254,13 @@
           </div>
         </section>
 
-        <section class="calc-panel" aria-labelledby="comparador-titulo">
-          <h2 id="comparador-titulo" class="calc-panel-title">Comparador: antes × depois</h2>
-          <p class="calc-panel-subtitle">
-            Veja a diferença entre seu consumo atual e um cenário com hábitos mais conscientes.
-          </p>
+        <section class="calc-panel calc-panel--oculto" id="painel-comparador" aria-labelledby="comparador-titulo">
+          <h2 id="comparador-titulo" class="calc-panel-title">Comparador</h2>
+          <p id="comparador-subtitulo" class="calc-panel-subtitle"></p>
 
           <div class="compare-grid">
             <article class="compare-card">
-              <span class="compare-tag">Antes</span>
+              <span class="compare-tag" id="comparador-tag-antes">—</span>
               <p class="compare-value" id="antes-litros">—</p>
               <p class="compare-detail" id="antes-reais">—</p>
             </article>
@@ -230,21 +268,15 @@
             <span class="compare-divider" aria-hidden="true">→</span>
 
             <article class="compare-card compare-card--depois">
-              <span class="compare-tag">Depois</span>
+              <span class="compare-tag" id="comparador-tag-depois">—</span>
               <p class="compare-value" id="depois-litros">—</p>
               <p class="compare-detail" id="depois-reais">—</p>
             </article>
           </div>
 
           <div class="savings-box">
-            <p class="savings-title">Economia possível</p>
+            <p class="savings-title" id="economia-titulo">—</p>
             <p class="savings-value" id="economia-total">—</p>
-          </div>
-
-          <div class="compare-actions">
-            <button type="button" class="btn btn--secondary" id="btn-simular">
-              Simular economia
-            </button>
           </div>
         </section>
 
@@ -258,8 +290,8 @@
             <li class="tip-item">
               <span class="tip-icon" aria-hidden="true">💡</span>
               <p class="tip-text">
-                Preencha o formulário e clique em "Calcular consumo" para receber dicas
-                adaptadas ao seu perfil de uso.
+                Preencha o formulário, escolha o tipo de cálculo e clique em "Calcular"
+                para receber dicas adaptadas ao seu perfil de uso.
               </p>
             </li>
           </ul>
