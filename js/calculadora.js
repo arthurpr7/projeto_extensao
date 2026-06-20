@@ -32,11 +32,27 @@ document.addEventListener("DOMContentLoaded", function () {
   var comparadorTagAntesEl = document.querySelector("#comparador-tag-antes");
   var comparadorTagDepoisEl = document.querySelector("#comparador-tag-depois");
   var listaDicasEl = document.querySelector("#lista-dicas");
+  var secaoFormulario = document.querySelector("#secao-formulario");
+  var secaoCalcInfo = document.querySelector("#secao-calc-info");
+  var resultadoSubtituloEl = document.querySelector("#resultado-subtitulo");
+  var painelNovoCalculo = document.querySelector("#painel-novo-calculo");
+  var btnCalcularNovamente = document.querySelector("#btn-calcular-novamente");
+  var calcResetTextoEl = document.querySelector("#calc-reset-texto");
 
   var ultimoCalculo = null;
+  var TEXTO_RESULTADO_PADRAO = "Resultado com base nos hábitos informados acima.";
+  var TEXTO_RESULTADO_FINAL = "Resultado com base nos hábitos informados.";
+  var TEXTO_RESET_FINAL =
+    "Análise concluída. Clique abaixo para limpar os dados e permitir que outra pessoa use a calculadora.";
+  var TEXTO_RESET_PARCIAL =
+    "Você pode alterar os hábitos e calcular de novo, ou clicar abaixo para recomeçar do zero.";
 
   if (!btnCalcular) {
     return;
+  }
+
+  if (btnCalcularNovamente) {
+    btnCalcularNovamente.addEventListener("click", reiniciarCalculadora);
   }
 
   btnCalcular.addEventListener("click", function () {
@@ -49,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var dadosNormalizados = normalizarDados(dados);
     var resultado = calcularConsumo(dadosNormalizados);
     var modo = lerModoCalculo();
+    var calculoAnterior = ultimoCalculo;
 
     exibirResultado(resultado);
     atualizarDicas(resultado.litros, dadosNormalizados.pessoas);
@@ -59,9 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
       configurarComparador("consciente");
       exibirComparador(resultado, resultadoConsciente, "consciente");
       mostrarComparador();
-    } else if (ultimoCalculo !== null) {
-      configurarComparador("pessoal", dados.nome, ultimoCalculo.nome);
-      exibirComparador(ultimoCalculo.resultado, resultado, "pessoal");
+    } else if (calculoAnterior !== null) {
+      configurarComparador("pessoal", dados.nome, calculoAnterior.nome);
+      exibirComparador(calculoAnterior.resultado, resultado, "pessoal");
       mostrarComparador();
     } else {
       ocultarComparador();
@@ -74,6 +91,22 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     limparMensagem();
+    mostrarBotaoCalcularNovamente();
+
+    if (modo === "comparar" || calculoAnterior !== null) {
+      if (calcResetTextoEl) {
+        calcResetTextoEl.textContent = TEXTO_RESET_FINAL;
+      }
+      finalizarFluxo();
+    } else {
+      if (calcResetTextoEl) {
+        calcResetTextoEl.textContent = TEXTO_RESET_PARCIAL;
+      }
+      exibirInfo(
+        "Altere seus hábitos e clique em Calcular mais uma vez para comparar sua evolução."
+      );
+    }
+
     rolarParaResultados();
   });
 
@@ -403,5 +436,115 @@ document.addEventListener("DOMContentLoaded", function () {
   function limparMensagem() {
     formMensagem.textContent = "";
     formMensagem.classList.remove("form-message--error");
+    formMensagem.classList.remove("form-message--info");
+  }
+
+  function exibirInfo(mensagem) {
+    formMensagem.textContent = mensagem;
+    formMensagem.classList.remove("form-message--error");
+    formMensagem.classList.add("form-message--info");
+  }
+
+  function finalizarFluxo() {
+    if (secaoFormulario) {
+      secaoFormulario.classList.add("calc-panel--oculto");
+    }
+
+    if (secaoCalcInfo) {
+      secaoCalcInfo.classList.add("calc-panel--oculto");
+    }
+
+    if (resultadoSubtituloEl) {
+      resultadoSubtituloEl.textContent = TEXTO_RESULTADO_FINAL;
+    }
+  }
+
+  function mostrarBotaoCalcularNovamente() {
+    if (painelNovoCalculo) {
+      painelNovoCalculo.classList.remove("calc-panel--oculto");
+    }
+  }
+
+  function ocultarBotaoCalcularNovamente() {
+    if (painelNovoCalculo) {
+      painelNovoCalculo.classList.add("calc-panel--oculto");
+    }
+  }
+
+  function restaurarDicasPlaceholder() {
+    if (!listaDicasEl) {
+      return;
+    }
+
+    listaDicasEl.textContent = "";
+
+    var item = document.createElement("li");
+    item.className = "tip-item";
+
+    var icone = document.createElement("span");
+    icone.className = "tip-icon";
+    icone.setAttribute("aria-hidden", "true");
+    icone.textContent = "💡";
+
+    var texto = document.createElement("p");
+    texto.className = "tip-text";
+    texto.textContent =
+      "Preencha o formulário, escolha o tipo de cálculo e clique em \"Calcular\" " +
+      "para receber dicas adaptadas ao seu perfil de uso.";
+
+    item.appendChild(icone);
+    item.appendChild(texto);
+    listaDicasEl.appendChild(item);
+  }
+
+  function limparFormulario() {
+    document.querySelector("#nome-usuario").value = "";
+    document.querySelector("#pessoas").value = "";
+    document.querySelector("#chuveiro").value = "";
+    document.querySelector("#descarga").value = "";
+    document.querySelector("#torneira").value = "";
+    document.querySelector("#roupa").value = "";
+    document.querySelector("#rega").value = "";
+    document.querySelector("#tarifa").value = "4.25";
+
+    var modoConsumo = document.querySelector('input[name="modo-calculo"][value="consumo"]');
+
+    if (modoConsumo) {
+      modoConsumo.checked = true;
+    }
+  }
+
+  function reiniciarCalculadora() {
+    ultimoCalculo = null;
+
+    if (secaoFormulario) {
+      secaoFormulario.classList.remove("calc-panel--oculto");
+    }
+
+    if (secaoCalcInfo) {
+      secaoCalcInfo.classList.remove("calc-panel--oculto");
+    }
+
+    if (resultadoSubtituloEl) {
+      resultadoSubtituloEl.textContent = TEXTO_RESULTADO_PADRAO;
+    }
+
+    if (calcResetTextoEl) {
+      calcResetTextoEl.textContent = TEXTO_RESET_FINAL;
+    }
+
+    totalLitrosEl.textContent = "—";
+    totalM3El.textContent = "—";
+    totalReaisEl.textContent = "—";
+
+    ocultarComparador();
+    restaurarDicasPlaceholder();
+    limparFormulario();
+    limparMensagem();
+    ocultarBotaoCalcularNovamente();
+
+    if (secaoFormulario) {
+      secaoFormulario.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 });

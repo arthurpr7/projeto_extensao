@@ -265,6 +265,134 @@ ul {
   opacity: 0.9;
 }
 
+/* ========== Carrossel do hero ========== */
+.hero-carousel {
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.hero-carousel-viewport {
+  display: grid;
+  width: 100%;
+  min-height: 18rem;
+}
+
+.hero-carousel-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 18rem;
+}
+
+.hero-carousel-slide {
+  grid-area: 1 / 1;
+  width: 100%;
+  min-height: 18rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  pointer-events: none;
+}
+
+.hero-carousel-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.hero-carousel-slide .hero-card {
+  width: 100%;
+  max-width: none;
+  height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.hero-carousel-slide .hero-card-label {
+  max-width: 15rem;
+  line-height: var(--line-height);
+  margin: 0;
+}
+
+.hero-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.hero-carousel-btn {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-card);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-xl);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.hero-carousel-btn:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+.hero-carousel-btn:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.hero-carousel-dots {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hero-carousel-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.hero-carousel-dot:hover {
+  background-color: var(--color-primary);
+}
+
+.hero-carousel-dot.is-active {
+  background-color: var(--color-primary);
+  transform: scale(1.2);
+}
+
+.hero-carousel-dot:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel-slide {
+    transition: none;
+  }
+}
+
 /* ========== Seções genéricas ========== */
 .section {
   padding: var(--space-2xl) 0;
@@ -397,25 +525,6 @@ ul {
   color: var(--color-text-muted);
   max-width: 36rem;
   margin: 0 auto;
-}
-
-.placeholder-box {
-  background-color: var(--color-bg-card);
-  border: 2px dashed var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3xl) var(--space-xl);
-  text-align: center;
-  color: var(--color-text-muted);
-}
-
-.placeholder-box p {
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--space-sm);
-}
-
-.placeholder-box small {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
 }
 
 /* ========== Página Sobre ========== */
@@ -678,11 +787,31 @@ ul {
   margin-bottom: 0;
 }
 
-.author-name {
+.author-list-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
   margin-top: var(--space-lg);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+}
+
+.author-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-align: left;
+  max-width: 24rem;
+  margin: 0 auto;
+}
+
+.author-list li {
+  font-size: var(--font-size-sm);
   color: var(--color-text);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-sm);
 }
 
 /* ========== Footer ========== */

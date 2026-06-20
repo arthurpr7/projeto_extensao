@@ -53,11 +53,65 @@
           </div>
         </div>
 
-        <aside class="hero-visual" aria-hidden="true">
-          <div class="hero-card">
-            <p class="hero-card-icon">🚿</p>
-            <p class="hero-card-value">150 L</p>
-            <p class="hero-card-label">média de consumo diário por pessoa no Brasil</p>
+        <aside class="hero-visual" aria-label="Curiosidades sobre consumo de água">
+          <div class="hero-carousel" id="hero-carousel">
+            <div class="hero-carousel-viewport" aria-live="polite">
+              <ul class="hero-carousel-track">
+                <li class="hero-carousel-slide is-active" data-slide="0">
+                  <article class="hero-card">
+                    <p class="hero-card-icon" aria-hidden="true">🚿</p>
+                    <p class="hero-card-value">150 L</p>
+                    <p class="hero-card-label">média de consumo diário por pessoa no Brasil</p>
+                  </article>
+                </li>
+                <li class="hero-carousel-slide" data-slide="1" aria-hidden="true">
+                  <article class="hero-card">
+                    <p class="hero-card-icon" aria-hidden="true">🚿</p>
+                    <p class="hero-card-value">12 L/min</p>
+                    <p class="hero-card-label">consumo médio de um chuveiro comum</p>
+                  </article>
+                </li>
+                <li class="hero-carousel-slide" data-slide="2" aria-hidden="true">
+                  <article class="hero-card">
+                    <p class="hero-card-icon" aria-hidden="true">💧</p>
+                    <p class="hero-card-value">108 L</p>
+                    <p class="hero-card-label">desperdiçados por mês com uma torneira pingando</p>
+                  </article>
+                </li>
+                <li class="hero-carousel-slide" data-slide="3" aria-hidden="true">
+                  <article class="hero-card">
+                    <p class="hero-card-icon" aria-hidden="true">🌍</p>
+                    <p class="hero-card-value">37%</p>
+                    <p class="hero-card-label">da água tratada perdida no Brasil</p>
+                  </article>
+                </li>
+                <li class="hero-carousel-slide" data-slide="4" aria-hidden="true">
+                  <article class="hero-card">
+                    <p class="hero-card-icon" aria-hidden="true">⏱️</p>
+                    <p class="hero-card-value">1.000 L</p>
+                    <p class="hero-card-label">economizados ao reduzir 3 minutos no banho</p>
+                  </article>
+                </li>
+              </ul>
+            </div>
+
+            <div class="hero-carousel-controls">
+              <button type="button" class="hero-carousel-btn hero-carousel-btn--prev" aria-label="Curiosidade anterior">
+                ‹
+              </button>
+
+              <div class="hero-carousel-dots" role="tablist" aria-label="Escolher curiosidade">
+                <button type="button" class="hero-carousel-dot is-active" role="tab" aria-selected="true" aria-label="Curiosidade 1 de 5" data-slide="0"></button>
+                <button type="button" class="hero-carousel-dot" role="tab" aria-selected="false" aria-label="Curiosidade 2 de 5" data-slide="1"></button>
+                <button type="button" class="hero-carousel-dot" role="tab" aria-selected="false" aria-label="Curiosidade 3 de 5" data-slide="2"></button>
+                <button type="button" class="hero-carousel-dot" role="tab" aria-selected="false" aria-label="Curiosidade 4 de 5" data-slide="3"></button>
+                <button type="button" class="hero-carousel-dot" role="tab" aria-selected="false" aria-label="Curiosidade 5 de 5" data-slide="4"></button>
+              </div>
+
+              <button type="button" class="hero-carousel-btn hero-carousel-btn--next" aria-label="Próxima curiosidade">
+                ›
+              </button>
+            </div>
           </div>
         </aside>
       </section>
@@ -259,6 +313,7 @@
     </div>
   </footer>
 
+  <script src="js/hero.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

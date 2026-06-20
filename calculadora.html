@@ -47,7 +47,7 @@
         </p>
       </header>
 
-      <section class="calc-info" aria-labelledby="como-calculamos-titulo">
+      <section class="calc-info" id="secao-calc-info" aria-labelledby="como-calculamos-titulo">
         <h2 id="como-calculamos-titulo" class="calc-info-title">Como calculamos</h2>
         <p class="calc-info-text">
           Multiplicamos seus hábitos informados por médias fixas de referência:
@@ -59,7 +59,7 @@
 
       <div class="calc-layout">
 
-        <section class="section" aria-labelledby="formulario-titulo">
+        <section class="section" id="secao-formulario" aria-labelledby="formulario-titulo">
           <h2 id="formulario-titulo" class="calc-panel-title">Seus hábitos de consumo</h2>
           <p class="calc-panel-subtitle">
             Preencha os campos abaixo com a média do seu dia a dia. Todos os valores são estimativas.
@@ -252,7 +252,7 @@
 
         <section class="calc-panel" id="painel-resultado" aria-labelledby="resultado-titulo">
           <h2 id="resultado-titulo" class="calc-panel-title">Consumo mensal estimado</h2>
-          <p class="calc-panel-subtitle">Resultado com base nos hábitos informados acima.</p>
+          <p class="calc-panel-subtitle" id="resultado-subtitulo">Resultado com base nos hábitos informados acima.</p>
 
           <div class="results-grid">
             <article class="result-item">
@@ -319,6 +319,16 @@
               </p>
             </li>
           </ul>
+        </section>
+
+        <section class="calc-panel calc-panel--oculto" id="painel-novo-calculo" aria-labelledby="novo-calculo-titulo">
+          <h2 id="novo-calculo-titulo" class="visually-hidden">Reiniciar calculadora</h2>
+          <p class="calc-reset-texto" id="calc-reset-texto">
+            Análise concluída. Clique abaixo para limpar os dados e permitir que outra pessoa use a calculadora.
+          </p>
+          <button type="button" class="btn btn--secondary" id="btn-calcular-novamente">
+            Calcular novamente
+          </button>
         </section>
 
       </div>
