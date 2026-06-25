@@ -1,10 +1,17 @@
+/*
+ * quiz.js — Quiz de hábitos de consumo de água
+ * Valida respostas, soma pontos, classifica o perfil e sugere melhorias.
+ */
+
 document.addEventListener("DOMContentLoaded", function () {
+  /* --- Configuração e dados fixos --- */
   var TOTAL_PERGUNTAS = 8;
   var PONTOS_MAXIMOS = 20;
-  var LIMITE_CONSCIENTE = 80;
-  var LIMITE_CAMINHO = 65;
-  var MAX_MELHORIAS = 4;
+  var LIMITE_CONSCIENTE = 80;  /* % para "Economizador consciente" */
+  var LIMITE_CAMINHO = 65;     /* % para "No caminho certo" */
+  var MAX_MELHORIAS = 4;       /* no máximo 4 dicas na lista de melhorias */
 
+  /* Pontuação ideal de cada pergunta (usada para saber o que melhorar) */
   var PONTUACAO_IDEAL = {
     1: 3,
     2: 3,
@@ -16,8 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
     8: 1
   };
 
+  /* Ordem de prioridade: hábitos mais impactantes aparecem primeiro nas dicas */
   var ORDEM_PRIORIDADE = [1, 2, 3, 4, 6, 5, 7, 8];
 
+  /* Texto de cada dica vinculado ao número da pergunta */
   var DICAS_MELHORIA = {
     1: "Feche a torneira ao escovar os dentes — esse hábito diário evita dezenas de litros desperdiçados.",
     2: "Reduza o tempo no chuveiro para até 5 minutos. O banho é o maior consumidor de água na maioria das casas.",
@@ -29,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     8: "Prefira balde em vez de mangueira aberta para lavar calçada, quintal ou carro."
   };
 
+  /* Referências aos elementos do HTML */
   var btnResultado = document.querySelector("#btn-resultado");
   var quizMensagem = document.querySelector("#quiz-mensagem");
   var resultadoQuiz = document.querySelector("#resultado-quiz");
@@ -43,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+  /* Fluxo principal: validar → calcular → classificar → exibir */
   btnResultado.addEventListener("click", function () {
     if (!validarRespostas()) {
       return;
@@ -57,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     limparMensagem();
   });
 
+  /* Garante que todas as 8 perguntas foram respondidas antes de calcular */
   function validarRespostas() {
     for (var i = 1; i <= TOTAL_PERGUNTAS; i++) {
       var selecionada = document.querySelector('input[name="pergunta-' + i + '"]:checked');
@@ -71,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
+  /* Soma o value de cada radio selecionado (cada opção tem pontuação diferente) */
   function calcularPontuacao() {
     var total = 0;
 
@@ -82,6 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return total;
   }
 
+  /*
+   * Monta lista de dicas para perguntas em que o usuário
+   * pontuou abaixo do ideal, respeitando a ordem de prioridade.
+   */
   function obterMelhorias() {
     var melhorias = [];
 
@@ -103,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return melhorias;
   }
 
+  /* Define título, ícone e texto conforme a faixa de percentual */
   function classificarResultado(percentual) {
     if (percentual >= LIMITE_CONSCIENTE) {
       return {
@@ -130,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  /* Preenche o painel de resultado e aplica classe CSS da faixa (consciente/médio/baixo) */
   function exibirResultado(pontuacao, percentual, classificacao, melhorias) {
     resultadoIcone.textContent = classificacao.icone;
     resultadoTitulo.textContent = classificacao.titulo;
@@ -146,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     resultadoQuiz.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
+  /* Cria itens da lista de melhorias dinamicamente no DOM */
   function exibirMelhorias(melhorias) {
     listaMelhorias.textContent = "";
 

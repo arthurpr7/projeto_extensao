@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- Cabeçalho: logo, menu hambúrguer e navegação (controlado por main.js) -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="site-logo" aria-label="Página inicial">
@@ -37,6 +38,7 @@
   <main class="site-main">
     <div class="container">
 
+      <!-- Hero: chamada principal + carrossel de curiosidades (hero.js) -->
       <section class="hero" aria-labelledby="hero-titulo">
         <div class="hero-content">
           <span class="hero-badge">Projeto de Extensão — Faminas</span>
@@ -53,6 +55,7 @@
           </div>
         </div>
 
+        <!-- Carrossel: 5 slides com setas, bolinhas e troca automática -->
         <aside class="hero-visual" aria-label="Curiosidades sobre consumo de água">
           <div class="hero-carousel" id="hero-carousel">
             <div class="hero-carousel-viewport" aria-live="polite">
@@ -116,6 +119,7 @@
         </aside>
       </section>
 
+      <!-- Cards com links para calculadora, comparador e quiz -->
       <section class="section" aria-labelledby="recursos-titulo">
         <header class="section-header">
           <h2 id="recursos-titulo" class="section-title">O que você pode fazer aqui</h2>
@@ -157,6 +161,7 @@
         </div>
       </section>
 
+      <!-- Seção educativa: fatos sobre consumo e desperdício de água -->
       <section class="section section--alt" aria-labelledby="curiosidades-titulo">
         <header class="section-header">
           <h2 id="curiosidades-titulo" class="section-title">Você sabia?</h2>
@@ -205,6 +210,7 @@
         </div>
       </section>
 
+      <!-- Passo a passo de como usar o site (calculadora → comparar → dicas → quiz) -->
       <section class="section" aria-labelledby="como-funciona-titulo">
         <header class="section-header">
           <h2 id="como-funciona-titulo" class="section-title">Como funciona</h2>
@@ -276,6 +282,7 @@
         </p>
       </section>
 
+      <!-- Destaque final: sustentabilidade e economia doméstica -->
       <section class="section section--impact" aria-labelledby="impacto-titulo">
         <div class="impact-grid">
           <article class="impact-card">
@@ -303,6 +310,7 @@
     </div>
   </main>
 
+  <!-- Rodapé institucional -->
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="footer-brand">Consumo de Água Consciente</p>
@@ -313,6 +321,7 @@
     </div>
   </footer>
 
+  <!-- Scripts: carrossel da home e menu mobile -->
   <script src="js/hero.js"></script>
   <script src="js/main.js"></script>
 </body>

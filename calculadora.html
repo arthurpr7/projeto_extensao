@@ -11,6 +11,7 @@
 </head>
 <body>
 
+  <!-- Cabeçalho: logo, menu hambúrguer e navegação (controlado por main.js) -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="site-logo" aria-label="Página inicial">
@@ -38,6 +39,7 @@
   <main class="site-main">
     <div class="container">
 
+      <!-- Título e descrição da página -->
       <header class="page-header">
         <h1 class="page-title">Calculadora de Consumo</h1>
         <p class="page-description">
@@ -47,6 +49,7 @@
         </p>
       </header>
 
+      <!-- Explicação das fórmulas e médias usadas no cálculo -->
       <section class="calc-info" id="secao-calc-info" aria-labelledby="como-calculamos-titulo">
         <h2 id="como-calculamos-titulo" class="calc-info-title">Como calculamos</h2>
         <p class="calc-info-text">
@@ -57,8 +60,10 @@
         </p>
       </section>
 
+      <!-- Layout em duas colunas: formulário à esquerda, resultados à direita -->
       <div class="calc-layout">
 
+        <!-- Formulário de hábitos — lido e validado por calculadora.js -->
         <section class="section" id="secao-formulario" aria-labelledby="formulario-titulo">
           <h2 id="formulario-titulo" class="calc-panel-title">Seus hábitos de consumo</h2>
           <p class="calc-panel-subtitle">
@@ -250,6 +255,7 @@
           </form>
         </section>
 
+        <!-- Painel de resultado: litros, m³ e valor em reais -->
         <section class="calc-panel" id="painel-resultado" aria-labelledby="resultado-titulo">
           <h2 id="resultado-titulo" class="calc-panel-title">Consumo mensal estimado</h2>
           <p class="calc-panel-subtitle" id="resultado-subtitulo">Resultado com base nos hábitos informados acima.</p>
@@ -278,6 +284,7 @@
           </p>
         </section>
 
+        <!-- Comparador antes × depois (oculto até o 2º cálculo ou modo consciente) -->
         <section class="calc-panel calc-panel--oculto" id="painel-comparador" aria-labelledby="comparador-titulo">
           <h2 id="comparador-titulo" class="calc-panel-title">Comparador</h2>
           <p id="comparador-subtitulo" class="calc-panel-subtitle"></p>
@@ -304,6 +311,7 @@
           </div>
         </section>
 
+        <!-- Dicas dinâmicas conforme faixa de consumo (baixo, médio ou alto) -->
         <section class="calc-panel" aria-labelledby="dicas-titulo">
           <h2 id="dicas-titulo" class="calc-panel-title">Dicas personalizadas</h2>
           <p class="calc-panel-subtitle">
@@ -321,6 +329,7 @@
           </ul>
         </section>
 
+        <!-- Botão para reiniciar a calculadora após a apresentação -->
         <section class="calc-panel calc-panel--oculto" id="painel-novo-calculo" aria-labelledby="novo-calculo-titulo">
           <h2 id="novo-calculo-titulo" class="visually-hidden">Reiniciar calculadora</h2>
           <p class="calc-reset-texto" id="calc-reset-texto">
@@ -336,6 +345,7 @@
     </div>
   </main>
 
+  <!-- Rodapé institucional -->
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="footer-brand">Consumo de Água Consciente</p>
@@ -346,6 +356,7 @@
     </div>
   </footer>
 
+  <!-- Scripts: menu mobile e lógica da calculadora -->
   <script src="js/main.js"></script>
   <script src="js/calculadora.js"></script>
 </body>

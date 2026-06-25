@@ -11,6 +11,7 @@
 </head>
 <body>
 
+  <!-- Cabeçalho: logo, menu hambúrguer e navegação (controlado por main.js) -->
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="site-logo" aria-label="Página inicial">
@@ -38,6 +39,7 @@
   <main class="site-main">
     <div class="container">
 
+      <!-- Título e descrição do quiz -->
       <header class="page-header">
         <h1 class="page-title">Você economiza água?</h1>
         <p class="page-description">
@@ -49,6 +51,7 @@
       <section class="section" aria-labelledby="quiz-titulo">
         <h2 id="quiz-titulo" class="visually-hidden">Questionário</h2>
 
+        <!-- 8 perguntas com opções pontuadas — corrigido por quiz.js -->
         <form id="form-quiz" class="quiz-form" novalidate>
 
           <fieldset class="quiz-pergunta">
@@ -252,6 +255,7 @@
 
         </form>
 
+        <!-- Resultado: classificação, pontuação e lista de melhorias (preenchido via JS) -->
         <article id="resultado-quiz" class="quiz-resultado" hidden>
           <span id="resultado-icone" class="resultado-icone" aria-hidden="true"></span>
           <h2 id="resultado-titulo" class="resultado-titulo"></h2>
@@ -271,6 +275,7 @@
     </div>
   </main>
 
+  <!-- Rodapé institucional -->
   <footer class="site-footer">
     <div class="footer-inner">
       <p class="footer-brand">Consumo de Água Consciente</p>
@@ -281,6 +286,7 @@
     </div>
   </footer>
 
+  <!-- Scripts: menu mobile e lógica do quiz -->
   <script src="js/main.js"></script>
   <script src="js/quiz.js"></script>
 </body>

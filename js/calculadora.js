@@ -1,4 +1,11 @@
+/*
+ * calculadora.js — Calculadora de consumo mensal de água
+ * Lê hábitos do formulário, calcula litros/m³/reais, compara cenários
+ * e exibe dicas personalizadas. Inclui fluxo de reset para apresentação.
+ */
+
 document.addEventListener("DOMContentLoaded", function () {
+  /* --- Constantes de cálculo (médias de referência educativas) --- */
   var DIAS_NO_MES = 30;
   var SEMANAS_NO_MES = 4;
   var LITROS_POR_MINUTO_CHUVEIRO = 12;
@@ -14,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var LIMITE_CONSUMO_BAIXO = 3000;
   var LIMITE_CONSUMO_MEDIO = 6000;
 
+  /* --- Elementos do DOM usados pelo script --- */
   var btnCalcular = document.querySelector("#btn-calcular");
   var formMensagem = document.querySelector("#form-mensagem");
   var painelComparador = document.querySelector("#painel-comparador");
@@ -39,6 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var btnCalcularNovamente = document.querySelector("#btn-calcular-novamente");
   var calcResetTextoEl = document.querySelector("#calc-reset-texto");
 
+  /*
+   * Memória da sessão: guarda o último cálculo para comparar evolução pessoal.
+   * Some ao recarregar a página ou ao clicar em "Calcular novamente".
+   */
   var ultimoCalculo = null;
   var TEXTO_RESULTADO_PADRAO = "Resultado com base nos hábitos informados acima.";
   var TEXTO_RESULTADO_FINAL = "Resultado com base nos hábitos informados.";
@@ -55,6 +67,13 @@ document.addEventListener("DOMContentLoaded", function () {
     btnCalcularNovamente.addEventListener("click", reiniciarCalculadora);
   }
 
+  /*
+   * Fluxo principal ao clicar em "Calcular":
+   * 1. Validar e normalizar dados
+   * 2. Calcular consumo e exibir resultado + dicas
+   * 3. Comparar (modo consciente OU 2º cálculo pessoal)
+   * 4. Decidir se oculta o formulário ou pede mais um cálculo
+   */
   btnCalcular.addEventListener("click", function () {
     var dados = lerCampos();
 
@@ -65,17 +84,19 @@ document.addEventListener("DOMContentLoaded", function () {
     var dadosNormalizados = normalizarDados(dados);
     var resultado = calcularConsumo(dadosNormalizados);
     var modo = lerModoCalculo();
-    var calculoAnterior = ultimoCalculo;
+    var calculoAnterior = ultimoCalculo; /* salva ANTES de sobrescrever ultimoCalculo */
 
     exibirResultado(resultado);
     atualizarDicas(resultado.litros, dadosNormalizados.pessoas);
 
+    /* Modo "comparar": seu consumo vs referência de uso consciente */
     if (modo === "comparar") {
       var dadosConscientes = criarCenarioConsciente(dadosNormalizados);
       var resultadoConsciente = calcularConsumo(dadosConscientes);
       configurarComparador("consciente");
       exibirComparador(resultado, resultadoConsciente, "consciente");
       mostrarComparador();
+    /* Modo pessoal com 2º cálculo: compara cálculo anterior com o atual */
     } else if (calculoAnterior !== null) {
       configurarComparador("pessoal", dados.nome, calculoAnterior.nome);
       exibirComparador(calculoAnterior.resultado, resultado, "pessoal");
@@ -93,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     limparMensagem();
     mostrarBotaoCalcularNovamente();
 
+    /* Após comparador pronto, esconde form; no 1º cálculo pessoal, mantém form visível */
     if (modo === "comparar" || calculoAnterior !== null) {
       if (calcResetTextoEl) {
         calcResetTextoEl.textContent = TEXTO_RESET_FINAL;
@@ -110,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     rolarParaResultados();
   });
 
+  /* Lê qual radio de modo de cálculo está marcado (consumo ou comparar) */
   function lerModoCalculo() {
     var selecionado = document.querySelector('input[name="modo-calculo"]:checked');
 
@@ -120,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return selecionado.value;
   }
 
+  /* Coleta todos os valores do formulário como objeto */
   function lerCampos() {
     return {
       nome: document.querySelector("#nome-usuario").value.trim(),
@@ -133,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  /* Converte strings dos inputs em números para os cálculos */
   function normalizarDados(dados) {
     return {
       pessoas: Number(dados.pessoas),
@@ -145,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  /* Verifica campos vazios, valores inválidos e regras mínimas (ex.: ≥ 1 pessoa) */
   function validarCampos(dados) {
     var campos = [
       { valor: dados.pessoas, nome: "Número de pessoas" },
@@ -185,6 +211,11 @@ document.addEventListener("DOMContentLoaded", function () {
     return true;
   }
 
+  /*
+   * Fórmula central: cada hábito × vazão/volume de referência × período.
+   * Chuveiro/torneira/descarga: por pessoa e por dia (× 30 dias).
+   * Roupa e rega: por semana (× 4 semanas).
+   */
   function calcularConsumo(dados) {
     var consumoChuveiro = dados.chuveiro * LITROS_POR_MINUTO_CHUVEIRO * dados.pessoas * DIAS_NO_MES;
     var consumoDescarga = dados.descarga * LITROS_POR_DESCARGA * dados.pessoas * DIAS_NO_MES;
@@ -203,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  /* Monta um segundo cenário com hábitos de referência para o comparador consciente */
   function criarCenarioConsciente(dados) {
     return {
       pessoas: dados.pessoas,
@@ -221,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
     totalReaisEl.textContent = formatarReais(resultado.reais);
   }
 
+  /* Ajusta títulos e rótulos do comparador conforme o tipo (consciente ou pessoal) */
   function configurarComparador(tipo, nomeAtual, nomeAnterior) {
     if (tipo === "pessoal") {
       comparadorTituloEl.textContent = "Comparador: evolução do seu consumo";
@@ -248,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return "Cálculo " + etapa;
   }
 
+  /* Preenche colunas antes/depois e calcula economia ou variação em litros e reais */
   function exibirComparador(resultadoAntes, resultadoDepois, tipo) {
     antesLitrosEl.textContent = formatarLitros(resultadoAntes.litros);
     antesReaisEl.textContent = formatarReais(resultadoAntes.reais) + " por mês";
@@ -312,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /* Classifica consumo por pessoa/mês e monta lista de dicas no painel lateral */
   function atualizarDicas(litrosTotais, pessoas) {
     if (!listaDicasEl) {
       return;
@@ -343,6 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /* Faixas: até 3000 L baixo, até 6000 médio, acima disso alto */
   function classificarConsumo(litrosPorPessoa) {
     if (litrosPorPessoa <= LIMITE_CONSUMO_BAIXO) {
       return "baixo";
@@ -355,6 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return "alto";
   }
 
+  /* Retorna array de dicas (ícone + texto) conforme a faixa de consumo */
   function obterDicasPorFaixa(faixa, litrosPorPessoa) {
     var litrosFormatados = formatarNumero(litrosPorPessoa);
 
@@ -416,6 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
   }
 
+  /* --- Funções auxiliares de formatação e mensagens --- */
   function formatarLitros(litros) {
     return formatarNumero(litros) + " L";
   }
@@ -445,6 +483,9 @@ document.addEventListener("DOMContentLoaded", function () {
     formMensagem.classList.add("form-message--info");
   }
 
+  /* --- Fluxo de apresentação: ocultar form e permitir novo usuário --- */
+
+  /* Esconde formulário e seção "Como calculamos" após análise concluída */
   function finalizarFluxo() {
     if (secaoFormulario) {
       secaoFormulario.classList.add("calc-panel--oculto");
@@ -471,6 +512,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /* Volta a dica inicial quando o usuário reinicia a calculadora */
   function restaurarDicasPlaceholder() {
     if (!listaDicasEl) {
       return;
@@ -497,6 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
     listaDicasEl.appendChild(item);
   }
 
+  /* Zera campos e volta ao modo "Meu consumo" com tarifa padrão */
   function limparFormulario() {
     document.querySelector("#nome-usuario").value = "";
     document.querySelector("#pessoas").value = "";
@@ -514,6 +557,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  /*
+   * Reset completo sem recarregar a página:
+   * limpa memória, resultados, comparador e restaura a interface inicial.
+   */
   function reiniciarCalculadora() {
     ultimoCalculo = null;
 
